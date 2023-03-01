@@ -13,31 +13,46 @@ import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 import DOMAIN from '../../domain'
-import TOKEN from '../../Token'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 const WidgetsDropdown = () => {
+
 
   const [poolSize, setPoolSize] = useState(0)
   const [feeGame, setFeeGame] = useState(0)
   const [minPoolSize, setMinPoolSize] = useState(0)
   const [profit, setProfit] = useState(0)
+  const socket = useSelector((state) => state.socket)
+  const token = useSelector((state) => state.token)
+
 
   useEffect(() => {
     const fetchData = async () => {
       const config = {
-        headers: { Authorization: `Bearer ${TOKEN}` },
+        headers: { Authorization: `Bearer ${token}` },
       };
       const data = await axios.get(`${DOMAIN}api/admin/config`, config)
       if (data.data.status) {
-        setFeeGame(data.data.data[1].value)
-        setPoolSize(data.data.data[0].value)
-        setProfit(data.data.data[3].value)
-        setMinPoolSize(data.data.data[2].value)
+        setFeeGame(data.data.data.FEE_GAME)
+        setPoolSize(data.data.data.POOL_SIZE)
+        setMinPoolSize(data.data.data.MIN_POOL_SIZE)
+        setProfit(data.data.data.PROFIT)
       }
     }
     fetchData()
+  }, [token])
+  useEffect(() => {
+    if (socket) {
+      socket.on('GET_CONFIG', data => {
+        setFeeGame(data.FEE_GAME)
+        setPoolSize(data.POOL_SIZE)
+        setMinPoolSize(data.MIN_POOL_SIZE)
+        setProfit(data.PROFIT)
+      })
+    }
   }, [])
+
   return (
     <CRow>
       <CCol sm={6} lg={3}>

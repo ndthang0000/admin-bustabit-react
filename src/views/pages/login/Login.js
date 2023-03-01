@@ -28,7 +28,11 @@ const Login = () => {
     const data = await axios.post(`${DOMAIN}api/auth/login`, { email: username, password })
 
     if (data.data.status) {
-      dispatch({ type: 'login', token: data.data.data.tokens.access.token, isAuthenticate: true })
+      dispatch({
+        type: 'login',
+        token: data.data.data.tokens.access.token,
+        isAuthenticate: true,
+      })
     }
   }
 

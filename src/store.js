@@ -1,9 +1,12 @@
 import { createStore } from 'redux'
+import io from 'socket.io-client';
+import DOMAIN from './domain';
 
 const initialState = {
   sidebarShow: true,
   isAuthenticate: false,
-  token: ""
+  token: "",
+  socket: null
 }
 
 const changeState = (state = initialState, { type, ...rest }) => {
@@ -11,7 +14,8 @@ const changeState = (state = initialState, { type, ...rest }) => {
     case 'set':
       return { ...state, ...rest }
     case 'login':
-      return { ...state, ...rest }
+      const socket = io(DOMAIN, { query: `token=${rest.token}` })
+      return { ...state, ...rest, socket }
     default:
       return state
   }
