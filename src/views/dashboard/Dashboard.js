@@ -62,6 +62,7 @@ import Statistic from '../base/statistic/Statistic'
 const Dashboard = () => {
 
   const isAuthenticate = useSelector((state) => state.isAuthenticate)
+  console.log("isAuthenticate", isAuthenticate)
   const socket = useSelector((state) => state.socket)
 
   const [dataBet, setDataBet] = useState([])
@@ -79,9 +80,6 @@ const Dashboard = () => {
 
       socket.on('CHANGE_STATUS', (data) => {
         setStatus(data);
-        if (data == 'END') {
-          setChartData([])
-        }
       });
 
       socket.on('GET_LIST_ONLINE', (data) => {
@@ -90,7 +88,6 @@ const Dashboard = () => {
 
       socket.on('COUNTER', (data) => {
         setCounter(data);
-        chartData.push({ name: 'time', pv: Number(data) })
         setChartData([...chartData])
       });
     }

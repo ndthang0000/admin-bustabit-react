@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CButton, CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react'
 import { useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 
 const Statictis = () => {
   const socket = useSelector((state) => state.socket)
@@ -17,6 +18,7 @@ const Statictis = () => {
 
   const handleStopForce = async () => {
     socket.emit('FORCE_STOP_GAME')
+    toast.success('Force stop game successfully')
   }
 
   useEffect(() => {
@@ -67,7 +69,7 @@ const Statictis = () => {
                   <CCol sm={4}>
                     <div>
                       <div className="text-medium-emphasis small">Điểm dừng</div>
-                      <div className="fs-5 fw-semibold">{stopPoint}</div>
+                      <div className="fs-5 fw-semibold">{stopPoint.toFixed(3)}</div>
                     </div>
                   </CCol>
                   <CCol sm={3}>
@@ -105,6 +107,7 @@ const Statictis = () => {
                         <CButton
                           color='danger'
                           onClick={handleStopForce}
+                          disabled={status == 'START' ? false : true}
                         >
                           Force Stop Game
                         </CButton>

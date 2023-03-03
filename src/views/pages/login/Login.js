@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import {
   CButton,
@@ -18,27 +18,42 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 import axios from 'axios'
 import DOMAIN from 'src/domain'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const isAuthenticate = useSelector((state) => state.isAuthenticate)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
   const dispatch = useDispatch()
   const handleLogin = async () => {
-    const data = await axios.post(`${DOMAIN}api/auth/login`, { email: username, password })
-
-    if (data.data.status) {
-      dispatch({
-        type: 'login',
-        token: data.data.data.tokens.access.token,
-        isAuthenticate: true,
-      })
+    try {
+      const data = await axios.post(`${DOMAIN}api/auth/login`, { email: username, password })
+      if (data.data.status) {
+        toast.success("Login Successfully", {
+          position: toast.POSITION.TOP_RIGHT
+        });
+        localStorage.setItem('token', data.data.data.tokens.access.token)
+        dispatch({
+          type: 'login',
+          token: data.data.data.tokens.access.token,
+          isAuthenticate: true,
+        })
+      }
     }
+    catch (err) {
+      toast.error("Something went wrong", {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    }
+
   }
 
   if (isAuthenticate) {
     return <Navigate to="/dashboard" replace />; //state={{ from: location }}
   }
+
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
