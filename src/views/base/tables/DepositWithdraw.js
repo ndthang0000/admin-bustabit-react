@@ -41,7 +41,7 @@ const Tables = () => {
       }
     }
     fetchData()
-  },)
+  }, [])
   return (
     <CRow>
       <CCol xs={12}>

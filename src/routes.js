@@ -72,6 +72,7 @@ const routes = [
   { path: '/base/spinners', name: 'Spinners', element: Spinners },
   { path: '/base/tables', name: 'Tables', element: Tables },
   { path: '/deposit-withdraw', name: 'DepositWithdraw', element: DepositWithdraw },
+  { path: '/bet', name: 'BetGame', element: DepositWithdraw },
   { path: '/base/tooltips', name: 'Tooltips', element: Tooltips },
   { path: '/buttons', name: 'Buttons', element: Buttons, exact: true },
   { path: '/buttons/buttons', name: 'Buttons', element: Buttons },
